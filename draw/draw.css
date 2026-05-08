@@ -1,0 +1,234 @@
+body {
+  font-family: "Archivo Black", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.footer {
+  width: 100%;
+  background-color: darkblue;
+  bottom: 0;
+  z-index: 10;
+  border: 1px solid darkblue;
+  box-sizing: border-box;
+  min-height: 100px;
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(0, 0, 139, 0.5);
+  position: sticky;
+}
+
+.header {
+  gap: 10px;
+  width: 100%;
+  height: 100px;
+  /* background-color: rgb(31, 185, 95); */
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(31, 185, 95, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.logo img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid black;
+}
+.button_draw {
+  width: fit-content;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid black;
+  border-radius: 6px;
+  color: black;
+  margin-right: 1em;
+  user-select: none;
+  cursor: pointer;
+}
+.copyright {
+  width: fit-content;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 6px;
+  color: rgb(255, 255, 255);
+  margin: 5px;
+  user-select: none;
+}
+.cell {
+  margin: 0px;
+  width: 27px;
+  height: 27px;
+  border: 1px solid black;
+}
+.cell:hover {
+  background-color: gray;
+}
+main {
+  margin: 0px;
+  border-top: 1px solid darkblue;
+  width: 100%;
+  height: calc(100vh - 200px);
+  display: flex;
+  flex-wrap: wrap;
+  border: 0.1px solid black;
+  border-bottom: 1px solid rgba(31, 185, 95, 0.5);
+}
+.button_back {
+  width: 49px;
+  height: 55px;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid black;
+  border-radius: 6px;
+  color: black;
+  margin-right: 1em;
+  user-select: none;
+  cursor: pointer;
+}
+.black {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: black;
+  margin: 5px;
+}
+.red {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: red;
+  margin: 5px;
+}
+.green {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: green;
+  margin: 5px;
+}
+.blue {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: blue;
+  margin: 5px;
+}
+.purple {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: purple;
+  margin: 5px;
+}
+.yellow {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: yellow;
+  margin: 5px;
+}
+.brown {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: brown;
+  margin: 5px;
+}
+.pink {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: pink;
+  margin: 5px;
+}
+.erase {
+  border-radius: 5px;
+  width: 25px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: white;
+  margin: 5px;
+}
+.paint-all {
+  border-radius: 5px;
+  width: 100px;
+  height: 25px;
+  border: 2px solid black;
+  background-color: lightgray;
+  user-select: none;
+  cursor: pointer;
+  margin: 5px;
+}
+.color-picker {
+  border-radius: 5px;
+  border: 2.5px solid black;
+  display: flex;
+  gap: 5px;
+  width: 450px;
+  height: 100px;
+  background-color: whitesmoke;
+  flex-direction: row;
+  overflow-y: scroll;
+  justify-content: center;
+  align-items: center;
+}
+.addons {
+  border: 2.5px solid black;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  width: 150px;
+  height: 40px;
+  margin: 5px;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+}
+.colors {
+  border: 2.5px solid black;
+  border-radius: 5px;
+  display: flex;
+  gap: 5px;
+  width: 150px;
+  height: 40px;
+  margin: 5px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+}
+.clear {
+  border-radius: 5px;
+  width: 100px;
+  height: 22.222222222222222222px;
+  border: 2px solid black;
+  background-color: white;
+  user-select: none;
+  cursor: pointer;
+}
+.field {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(50, 1fr);
+  grid-template-rows: repeat(15, 1fr);
+  gap: 2.5px;
+  background-color: black;
+}
+.cell {
+  margin: 0px;
+  width: 25px;
+  height: 25px;
+  border: 1px solid black;
+  background-color: white;
+}
