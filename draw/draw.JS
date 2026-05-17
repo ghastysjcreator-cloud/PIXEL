@@ -83,16 +83,3 @@ paintAll.addEventListener("click", function () {
     },
   });
 });
-
-// const colorBefore = "white";
-// anime({
-//   targets: document.querySelector(".cell"),
-//   backgroundColor: ["#FFFFFF", "#008000"],
-//   duration: 2.5 * 1000,
-//   easing: "easeInOutQuad",
-//   begin: () => console.log(document.querySelector(".cell").style.backgroundColor),
-//   complete: () => {
-//     console.log("Анимация завершена для элемента:");
-//     console.log(document.querySelector(".cell").style.backgroundColor);
-//   },
-// });
