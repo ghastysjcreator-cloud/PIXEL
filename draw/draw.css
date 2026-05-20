@@ -1,30 +1,13 @@
-.field {
-  width: min(100%, 1000px);
-  height: min(100%, calc(100vh - 230px));
-  min-width: 620px;
-  min-height: 320px;
-  overflow: hidden;
-  background-color: black;
-  border: 1px solid black;
-  touch-action: none;
-}
-.cell {
-  margin: 0px;
-  width: 25px;
-  height: 25px;
-  border: 1px solid black;
-  background-color: white;
-}
 * {
   box-sizing: border-box;
 }
-
 html,
 body {
   height: 100%;
 }
 
 body {
+  background: white;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -32,11 +15,59 @@ body {
   overflow: hidden;
 }
 
-.header,
+.header {
+  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  /* background-color: rgb(31, 185, 95); */
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(31, 185, 95, 0.5);
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  flex-shrink: 0;
+}
 .footer {
+  min-height: 50px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
+  border: 1px solid darkblue;
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(0, 0, 139, 0.5);
   flex-shrink: 0;
 }
 
+.field {
+  width: min(100%, 1000px);
+  height: min(100%, calc(100vh - 230px));
+  min-width: 620px;
+  min-height: 320px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(50, minmax(0, 1fr));
+  grid-template-rows: repeat(20, minmax(0, 1fr));
+  gap: 1px;
+  border: 1px solid black;
+  touch-action: none;
+}
+.cell {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+  background-color: white;
+  user-select: none;
+  touch-action: none;
+}
+.cell:hover {
+  filter: brightness(0.75);
+  background-color: rgb(255, 255, 255);
+}
 .workspace {
   flex: 1;
   min-height: 0;
@@ -47,62 +78,25 @@ body {
   padding: 12px;
 }
 
-.header {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.color-picker,
-.colors,
-.addons {
-  flex-wrap: wrap;
-}
-
-@media (max-width: 900px) {
-  .field {
-    min-width: 520px;
-  }
-}
-
-@media (max-width: 640px) {
-  body {
-    overflow: auto;
-  }
-
-  .field {
-    min-width: 460px;
-    min-height: 300px;
-  }
-
-  .color-picker {
-    width: 100%;
-  }
-}
-
 .logo img {
-  width: 84px;
-  height: 84px;
+  width: 100px;
+  height: 100px;
+  border: 2px solid black;
   object-fit: cover;
   display: block;
 }
 
-.button_back {
-  background: white;
-}
-
-body {
-  background: #f3f6fb;
-}
-
-.header {
-  min-height: 100px;
-  padding: 10px;
-  gap: 12px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-}
-
 .color-picker {
+  border-radius: 5px;
+  border: 2.5px solid black;
+  display: flex;
+  width: 450px;
+  height: 100px;
+  background-color: whitesmoke;
+  flex-direction: row;
+  overflow-y: scroll;
+  justify-content: center;
+  align-items: center;
   width: min(100%, 720px);
   padding: 8px;
   gap: 8px;
@@ -144,56 +138,10 @@ body {
   font-family: inherit;
 }
 
-.cell:hover {
-  filter: brightness(0.95);
-}
-
-.footer {
-  min-height: 50px;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
 .copyright {
   margin: 0;
 }
 
-.footer {
-  width: 100%;
-  background-color: darkblue;
-  bottom: 0;
-  z-index: 10;
-  border: 1px solid darkblue;
-  box-sizing: border-box;
-  min-height: 100px;
-  backdrop-filter: blur(2.5px);
-  background-color: rgba(0, 0, 139, 0.5);
-  position: sticky;
-}
-
-.header {
-  gap: 10px;
-  width: 100%;
-  height: 100px;
-  /* background-color: rgb(31, 185, 95); */
-  backdrop-filter: blur(2.5px);
-  background-color: rgba(31, 185, 95, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-  flex-direction: row;
-  top: 0;
-  z-index: 10;
-}
-.logo img {
-  width: 100px;
-  height: 100px;
-  border: 2px solid black;
-}
 .button_draw {
   width: fit-content;
   padding: 0.45rem 0.6rem;
@@ -213,15 +161,6 @@ body {
   margin: 5px;
   user-select: none;
 }
-.cell {
-  margin: 0px;
-  width: 27px;
-  height: 27px;
-  border: 1px solid black;
-}
-.cell:hover {
-  background-color: gray;
-}
 main {
   margin: 0px;
   border-top: 1px solid darkblue;
@@ -233,6 +172,7 @@ main {
   border-bottom: 1px solid rgba(31, 185, 95, 0.5);
 }
 .button_back {
+  background: white;
   width: 49px;
   height: 55px;
   padding: 0.45rem 0.6rem;
@@ -242,6 +182,7 @@ main {
   margin-right: 1em;
   user-select: none;
   cursor: pointer;
+  font-size: large;
 }
 .black {
   border-radius: 5px;
@@ -325,25 +266,12 @@ main {
   cursor: pointer;
   margin: 5px;
 }
-.color-picker {
-  border-radius: 5px;
-  border: 2.5px solid black;
-  display: flex;
-  gap: 5px;
-  width: 450px;
-  height: 100px;
-  background-color: whitesmoke;
-  flex-direction: row;
-  overflow-y: scroll;
-  justify-content: center;
-  align-items: center;
-}
 .addons {
   border: 2.5px solid black;
   border-radius: 5px;
   display: flex;
   gap: 5px;
-  width: 150px;
+  width: 200px;
   height: 40px;
   margin: 5px;
   justify-content: center;
@@ -371,4 +299,25 @@ main {
   background-color: white;
   user-select: none;
   cursor: pointer;
+}
+
+@media (max-width: 900px) {
+  .field {
+    min-width: 520px;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    overflow: auto;
+  }
+
+  .field {
+    min-width: 460px;
+    min-height: 300px;
+  }
+
+  .color-picker {
+    width: 100%;
+  }
 }
