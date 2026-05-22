@@ -18,7 +18,7 @@ const COLOR_TO_CODE = {
 };
 
 const CODE_TO_COLOR = {
-  0: { background: "#ffffff", border: "#d9d9d9" },
+  0: { background: "#ffffff", border: "#fff" },
   1: { background: "#000000", border: "#111" },
   2: { background: "#ff0000", border: "#111" },
   3: { background: "#008000", border: "#111" },
@@ -28,6 +28,75 @@ const CODE_TO_COLOR = {
   7: { background: "#a52a2a", border: "#111" },
   8: { background: "#ffc0cb", border: "#111" },
 };
+
+document.addEventListener("pointerup", function () {
+  if (IS_CLICKED) {
+    saveGridToCookie();
+  }
+
+  IS_CLICKED = false;
+});
+
+cell.addEventListener("pointerdown", function () {
+  applyCellColor(cell, getCodeByColorName(color));
+});
+
+cell.addEventListener("pointerenter", function () {
+  if (IS_CLICKED) {
+    applyCellColor(cell, getCodeByColorName(color));
+  }
+});
+
+saveImageButton.addEventListener("click", function () {
+  domtoimage
+    .toPng(field)
+    .then(function (dataUrl) {
+      const link = document.createElement("a");
+      link.download = "pixel-draw.png";
+      link.href = dataUrl;
+      link.click();
+    })
+    .catch(function (error) {
+      console.error("Не удалось сохранить изображение:", error);
+    });
+});
+
+function writeCookie(name, value, maxAgeSeconds = 60 * 60 * 24 * 30) {
+  document.cookie = `${name}=${value}; max-age=${maxAgeSeconds}; path=/; SameSite=Lax`;
+}
+
+function serializeGrid() {
+  return cells.map((cell) => cell.dataset.colorCode ?? "0").join("");
+}
+
+function saveGridToCookie() {
+  writeCookie(COOKIE_NAME, serializeGrid());
+}
+
+function readCookie(name) {
+  const prefix = name + "=";
+  const cookies = document.cookie.split("; ");
+
+  for (let i = 0; i < cookies.length; i++) {
+    if (cookies[i].startsWith(prefix)) {
+      return cookies[i].slice(prefix.length);
+    }
+  }
+
+  return "";
+}
+
+function loadGridFromCookie() {
+  const savedState = readCookie(COOKIE_NAME);
+
+  if (!savedState || savedState.length !== maxFields) {
+    return;
+  }
+
+  for (let i = 0; i < cells.length; i++) {
+    applyCellColor(cells[i], savedState[i]);
+  }
+}
 
 function getCodeByColorName(colorName) {
   return COLOR_TO_CODE[colorName] ?? "0";
@@ -42,7 +111,6 @@ function applyCellColor(cell, colorCode) {
 
 function get_result_from_cookie() {
   let cookie = document.cookie;
-
 }
 
 function applyCellColor(cell, code) {}
@@ -118,6 +186,7 @@ for (let i = 0; i < maxFields; i++) {
   });
 }
 
+loadGridFromCookie();
 const buttons = document.querySelectorAll(".cell");
 console.log(maxFields);
 console.log(document.querySelectorAll(".cell").length);
@@ -128,6 +197,11 @@ clear.addEventListener("click", function () {
     cells[i].style.backgroundColor = "white";
     cells[i].style.borderColor = "#000000";
   }
+  for (let i = 0; i < cells.length; i++) {
+    applyCellColor(cells[i], "0");
+  }
+
+  saveGridToCookie();
 });
 
 erase.addEventListener("click", function () {

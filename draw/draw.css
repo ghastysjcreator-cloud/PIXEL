@@ -301,8 +301,8 @@ main {
   background-color: lightgrey;
   user-select: none;
   cursor: pointer;
-}                                                 
-.save-image {         
+}
+.save-image {
   border-radius: 5px;
   width: 100px;
   height: 22.222222222222222222px;
