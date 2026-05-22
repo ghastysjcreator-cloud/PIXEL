@@ -37,16 +37,6 @@ document.addEventListener("pointerup", function () {
   IS_CLICKED = false;
 });
 
-cell.addEventListener("pointerdown", function () {
-  applyCellColor(cell, getCodeByColorName(color));
-});
-
-cell.addEventListener("pointerenter", function () {
-  if (IS_CLICKED) {
-    applyCellColor(cell, getCodeByColorName(color));
-  }
-});
-
 saveImageButton.addEventListener("click", function () {
   domtoimage
     .toPng(field)
@@ -89,7 +79,7 @@ function readCookie(name) {
 function loadGridFromCookie() {
   const savedState = readCookie(COOKIE_NAME);
 
-  if (!savedState || savedState.length !== maxFields) {
+  if (!savedState || savedState.length !== cells.length) {
     return;
   }
 
@@ -112,8 +102,6 @@ function applyCellColor(cell, colorCode) {
 function get_result_from_cookie() {
   let cookie = document.cookie;
 }
-
-function applyCellColor(cell, code) {}
 
 let IS_CLICKED = false;
 let FILL_MODE = false;
@@ -163,25 +151,19 @@ document.addEventListener("pointerdown", function () {
   IS_CLICKED = true;
 });
 
-document.addEventListener("pointerup", function () {
-  IS_CLICKED = false;
-});
 for (let i = 0; i < maxFields; i++) {
   let cell = document.createElement("div");
   cell.classList.add("cell");
   cell.setAttribute("id", `${i}`);
   field.appendChild(cell);
   cells.push(cell);
-
   cell.addEventListener("pointerdown", function () {
-    cell.style.backgroundColor = color;
-    cell.style.borderColor = color === "white" ? "#fff" : "#000";
+    applyCellColor(cell, getCodeByColorName(color));
   });
 
   cell.addEventListener("pointerenter", function () {
     if (IS_CLICKED) {
-      cell.style.backgroundColor = color;
-      cell.style.borderColor = color === "white" ? "#fff" : "#000";
+      applyCellColor(cell, getCodeByColorName(color));
     }
   });
 }
@@ -248,4 +230,3 @@ paintAll.addEventListener("click", function () {
 //   },
 // });
 
-applyCellColor(cell, code);
