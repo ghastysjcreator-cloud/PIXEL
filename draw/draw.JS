@@ -1,12 +1,57 @@
 let paintAll = document.querySelector(".paint-all");
 let clear = document.querySelector(".clear");
+let saveImageButton = document.querySelector(".save-image");
+let field = document.querySelector(".field");
+
+const COOKIE_NAME = "pixel-draw-state";
+
+const COLOR_TO_CODE = {
+  white: "0",
+  black: "1",
+  red: "2",
+  green: "3",
+  blue: "4",
+  yellow: "5",
+  purple: "6",
+  brown: "7",
+  pink: "8",
+};
+
+const CODE_TO_COLOR = {
+  0: { background: "#ffffff", border: "#d9d9d9" },
+  1: { background: "#000000", border: "#111" },
+  2: { background: "#ff0000", border: "#111" },
+  3: { background: "#008000", border: "#111" },
+  4: { background: "#0000ff", border: "#111" },
+  5: { background: "#ffea00", border: "#111" },
+  6: { background: "#800080", border: "#111" },
+  7: { background: "#a52a2a", border: "#111" },
+  8: { background: "#ffc0cb", border: "#111" },
+};
+
+function getCodeByColorName(colorName) {
+  return COLOR_TO_CODE[colorName] ?? "0";
+}
+
+function applyCellColor(cell, colorCode) {
+  const state = CODE_TO_COLOR[colorCode] ?? CODE_TO_COLOR["0"];
+  cell.dataset.colorCode = colorCode;
+  cell.style.backgroundColor = state.background;
+  cell.style.borderColor = state.border;
+}
+
+function get_result_from_cookie() {
+  let cookie = document.cookie;
+
+}
+
+function applyCellColor(cell, code) {}
 
 let IS_CLICKED = false;
 let FILL_MODE = false;
 let maxFields = 1000;
 
 let workspace = document.querySelector(".workspace");
-let field = workspace.querySelector(".field");
 
 let red = document.querySelector(".red");
 let black = document.querySelector(".black");
@@ -18,7 +63,7 @@ let brown = document.querySelector(".brown");
 let pink = document.querySelector(".pink");
 let erase = document.querySelector(".erase");
 
-let color = "white";
+let color = "black";
 let cells = [];
 
 red.addEventListener("click", () => {
@@ -61,25 +106,14 @@ for (let i = 0; i < maxFields; i++) {
   cells.push(cell);
 
   cell.addEventListener("pointerdown", function () {
-      if (targetColor === "white") {
-        cell.style.borderColor = "#000000";
-        cell.style.backgroundColor = "ffffff";
-      } else if (targetColor === "black") {
-        cell.style.backgroundColor = "black";
-      } else {
-        cell.style.borderColor = "#000000";
-        cell.style.backgroundColor = color;
-      }
+    cell.style.backgroundColor = color;
+    cell.style.borderColor = color === "white" ? "#fff" : "#000";
   });
 
   cell.addEventListener("pointerenter", function () {
     if (IS_CLICKED) {
       cell.style.backgroundColor = color;
-      if(color == "white") {
-        cell.style.borderColor = "#000000";
-      } else if(color != "white") {
-        cell.style.borderColor = "#000000";
-      }
+      cell.style.borderColor = color === "white" ? "#fff" : "#000";
     }
   });
 }
@@ -139,3 +173,5 @@ paintAll.addEventListener("click", function () {
 //     console.log(document.querySelector(".cell").style.backgroundColor);
 //   },
 // });
+
+applyCellColor(cell, code);
