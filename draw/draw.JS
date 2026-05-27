@@ -1,3 +1,5 @@
+import domtoimage from "https://cdn.skypack.dev/dom-to-image-more";
+
 let paintAll = document.querySelector(".paint-all");
 let clear = document.querySelector(".clear");
 let saveImageButton = document.querySelector(".save-image");
@@ -18,15 +20,15 @@ const COLOR_TO_CODE = {
 };
 
 const CODE_TO_COLOR = {
-  0: { background: "#ffffff", border: "#fff" },
-  1: { background: "#000000", border: "#111" },
-  2: { background: "#ff0000", border: "#111" },
-  3: { background: "#008000", border: "#111" },
-  4: { background: "#0000ff", border: "#111" },
-  5: { background: "#ffea00", border: "#111" },
-  6: { background: "#800080", border: "#111" },
-  7: { background: "#a52a2a", border: "#111" },
-  8: { background: "#ffc0cb", border: "#111" },
+  0: { background: "#ffffff", border: "#000" },
+  1: { background: "#000000", border: "#000" },
+  2: { background: "#ff0000", border: "#000" },
+  3: { background: "#008000", border: "#000" },
+  4: { background: "#0000ff", border: "#000" },
+  5: { background: "#ffea00", border: "#000" },
+  6: { background: "#800080", border: "#000" },
+  7: { background: "#a52a2a", border: "#000" },
+  8: { background: "#ffc0cb", border: "#000" },
 };
 
 document.addEventListener("pointerup", function () {
@@ -217,6 +219,20 @@ paintAll.addEventListener("click", function () {
   });
 });
 
+saveImageButton.addEventListener("click", function () {
+  domtoimage
+    .toPng(field)
+    .then(function (dataUrl) {
+      const link = document.createElement("a");
+      let img = link.download = "pixel-draw.png";
+      link.href = dataUrl;
+      link.click();
+    })
+    .catch(function (error) {
+      console.error("Something went wrong with saving the IMG: ", error);
+    });
+});
+
 // const colorBefore = "white";
 // anime({
 //   targets: document.querySelector(".cell"),
@@ -229,4 +245,3 @@ paintAll.addEventListener("click", function () {
 //     console.log(document.querySelector(".cell").style.backgroundColor);
 //   },
 // });
-
