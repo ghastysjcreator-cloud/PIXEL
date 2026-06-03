@@ -76,6 +76,7 @@ body {
   align-items: center;
   overflow: auto;
   padding: 12px;
+  background-image: url("Images/backgroundIMG.png");
 }
 
 .logo img {
@@ -273,7 +274,7 @@ main {
   display: flex;
   gap: 5px;
   width: 200px;
-  height: 40px;
+  height: 75px;
   margin: 5px;
   justify-content: center;
   align-items: center;
@@ -286,7 +287,7 @@ main {
   display: flex;
   gap: 5px;
   width: 150px;
-  height: 40px;
+  height: 75px;
   margin: 5px;
   justify-content: center;
   align-items: center;
@@ -301,6 +302,7 @@ main {
   background-color: lightgrey;
   user-select: none;
   cursor: pointer;
+  margin: 5px;
 }
 .save-image {
   border-radius: 5px;
@@ -310,6 +312,7 @@ main {
   background-color: lightgrey;
   user-select: none;
   cursor: pointer;
+  margin: 5px;
 }
 @media (max-width: 900px) {
   .field {
