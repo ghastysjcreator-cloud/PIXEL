@@ -1,0 +1,127 @@
+@import url("https://googleapis.com");
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: white;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow: scroll;
+}
+
+.footer {
+  min-height: 50px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
+  border: 1px solid darkblue;
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(0, 0, 139, 0.5);
+  flex-shrink: 0;
+}
+
+.header {
+  min-height: 100px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  /* background-color: rgb(31, 185, 95); */
+  backdrop-filter: blur(2.5px);
+  background-color: rgba(31, 185, 95, 0.5);
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  flex-shrink: 0;
+  position: sticky;
+}
+.logo img {
+  width: 100px;
+  height: 100px;
+  border: 2px solid black;
+}
+.button_draw {
+  width: 50px;
+  height: 50px;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid black;
+  border-radius: 6px;
+  color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(222, 222, 222);
+  margin-right: 1em;
+  user-select: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.copyright {
+  width: fit-content;
+  padding: 0.45rem 0.6rem;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 6px;
+  color: rgb(255, 255, 255);
+  margin: 5px;
+  user-select: none;
+}
+.card {
+  width: 100px;
+  height: 100px;
+  border: 2.5px solid black;
+  border-radius: 6px;
+  margin: 15px;
+}
+.card img {
+  width: 100%;
+  height: 75%;
+}
+.card input {
+  border-radius: 6px;
+  width: 95px;
+  height: 18px;
+  border: 0.5px solid black;
+  margin: 0;
+}
+/* .cards {
+  width: 407px;
+  height: 407px;
+  border: 5px solid black;
+  flex-wrap: wrap;
+  display: flex;
+} */
+.txt-holder {
+  border-radius: 6px;
+  border: 2px solid black;
+  width: fit-content;
+  max-width: 100%;
+  height: fit-content;
+  font-size: 22.65px;
+  background-color: black;
+  color: aliceblue;
+  font-family: "Archivo Black", sans-serif;
+  width: 100%;
+}
+.txt pre {
+  padding: 0.45rem 0.6rem;
+  color: black;
+  margin: 5px;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  width: 100%;
+}
