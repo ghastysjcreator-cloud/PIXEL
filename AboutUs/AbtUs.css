@@ -125,3 +125,17 @@ pre {
   word-break: break-word;
   width: 100%;
 }
+.inf{
+  font-size: larger;
+}
+.article-line , .serious{
+    display: flex;
+    align-items:center ;
+    justify-content: center;
+}
+.serious div{
+    color: red;
+}
+.serious p{
+    color: aliceblue;
+}

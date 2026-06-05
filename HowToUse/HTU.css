@@ -125,3 +125,7 @@ pre {
   word-break: break-word;
   width: 100%;
 }
+
+.inf{
+  font-size: larger;
+}
