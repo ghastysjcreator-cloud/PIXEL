@@ -5,6 +5,7 @@ let clear = document.querySelector(".clear");
 let saveImageButton = document.querySelector(".save-image");
 let field = document.querySelector(".field");
 
+
 const COOKIE_NAME = "pixel-draw-state";
 
 const COLOR_TO_CODE = {
@@ -223,15 +224,18 @@ saveImageButton.addEventListener("click", function () {
   domtoimage
     .toPng(field)
     .then(function (dataUrl) {
-      const link = document.createElement("a");
-      let img = link.download = "pixel-draw.png";
-      link.href = dataUrl;
-      link.click();
+      // This sends the data directly out of the browser instead of downloading it
+      fetch("/save-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: dataUrl }),
+      }).then(() => console.log("Image saved to /images/ folder!"));
     })
     .catch(function (error) {
       console.error("Something went wrong with saving the IMG: ", error);
     });
 });
+
 
 // const colorBefore = "white";
 // anime({
