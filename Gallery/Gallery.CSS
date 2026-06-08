@@ -1,5 +1,4 @@
 @import url("https://fonts.google.com/specimen/Archivo+Black?preview.script=Latn&preview.lang=en_Latn");
-
 * {
   box-sizing: border-box;
 }
@@ -7,7 +6,6 @@ html,
 body {
   height: 100%;
 }
-
 body {
   background: white;
   margin: 0;
@@ -16,7 +14,6 @@ body {
   min-height: 100vh;
   overflow: scroll;
 }
-
 .footer {
   min-height: 50px;
   padding: 10px;
@@ -30,7 +27,6 @@ body {
   background-color: rgba(0, 0, 139, 0.5);
   flex-shrink: 0;
 }
-
 .container {
   width: 100%;
   height: 100vh;
@@ -39,7 +35,6 @@ body {
   align-items: center;
   flex-direction: column;
 }
-
 .header {
   min-height: 100px;
   width: 100%;
@@ -134,4 +129,3 @@ body {
 .txt-holder img {
   display: flex;
 } 
-
