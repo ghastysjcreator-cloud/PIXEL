@@ -1,7 +1,6 @@
 const GALLERY_STORAGE_KEY = "pixel-draw-gallery";
 const GALLERY_ARCHIVE_STORAGE_KEY = "pixel-draw-gallery-archive";
 const MAX_GALLERY_ITEMS = 9;
-const MAX_ARCHIVE_ITEMS = 60;
 
 const galleryGrid = document.querySelector("#galleryGrid");
 const galleryCount = document.querySelector("#galleryCount");
@@ -12,15 +11,12 @@ const previewModal = document.querySelector("#previewModal");
 const modalImage = document.querySelector("#modalImage");
 const modalMeta = document.querySelector("#modalMeta");
 const modalTitle = document.querySelector("#modalTitle");
-const saveNotice = document.querySelector(".save-notice");
+const year = document.querySelector("#year");
 
-const GRID_COLUMNS = 50;
-const GRID_ROWS = 20;
-const PREVIEW_CELL_SIZE = 16;
-
-let noticeTimeoutId = 0;
 let artworks = [];
-
+if (year) {
+  year.textContent = new Date().getFullYear();
+}
 function loadStorageList(key) {
   try {
     const rawValue = localStorage.getItem(key);
@@ -36,21 +32,47 @@ function saveStorageList(key, value) {
   localStorage.setItem(key, JSON.stringify(value));
 }
 
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 function sortByDateDesc(items) {
   return [...items].sort(function (a, b) {
     return new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime();
   });
 }
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleString("en-US", {
+function formatDate(value) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) {
+    return "дата не указана";
+  }
+  return new Intl.DateTimeFormat("ru-RU", {
+    day: "2-digit",
+    month: "2-digit",
     year: "numeric",
-    month: "short",
-    day: "numeric",
     hour: "2-digit",
     minute: "2-digit",
-  });
+  }).format(date);
+}
+
+function formatImageFormat(fromat) {
+  if (format === "image/webp") return "WebP";
+  if (format === "image/png") return "PNG";
+  return format || " image";
+}
+
+function getArchiveItems() {
+  return loadStorageList(GALLERY_ARCHIVE_STORAGE_KEY);
+}
+
+function saveGallery() {
+  saveStorageList(GALLERY_STORAGE_KEY, artworks);
 }
 
 function loadGallery() {
@@ -58,55 +80,64 @@ function loadGallery() {
 }
 
 function renderPlaceholder(index) {
-  return (
-    '<article class="gallery-card gallery-card--placeholder">' +
-    '<div class="placeholder-art" aria-hidden="true"></div>' +
-    "<h3>Пустой слот " +
-    (index + 1) +
-    "</h3>" +
-    "<p>Сохрани рисунок в редакторе, и он появится здесь.</p>" +
-    "</article>"
-  );
+  return `
+    <article class="gallery-card gallery-card--placeholder">
+      <div class="placeholder-art" aria-hidden="true">
+        ${Array.from({ length: 25 }, () => "<span></span>").join("")}
+      </div>
+      <h3>Пустой слот ${index + 1}</h3>
+      <p>Сохрани рисунок в редакторе, и он появится здесь.</p>
+    </article>
+  `;
 }
 
 function renderArtworkCard(artwork, index) {
-  return (
-    '<article class="gallery-card" data-artwork-id="' +
-    artwork.id +
-    '">' +
-    '<img class="gallery-card__image" src="' +
-    artwork.dataUrl +
-    '" alt="Работа ' +
-    (index + 1) +
-    '">' +
-    "<h3>Работа " +
-    (index + 1) +
-    "</h3>" +
-    "<p>Сохранено: " +
-    formatDate(artwork.savedAt) +
-    "</p>" +
-    '<button data-action="open" data-id="' +
-    artwork.id +
-    '">Открыть</button>' +
-    '<button data-action="delete" data-id="' +
-    artwork.id +
-    '">Удалить</button>' +
-    "</article>"
-  );
+  const title = `Работа ${index + 1}`;
+  const savedDate = formatDate(artwork.savedAt);
+  const imageFormat = formatImageFormat(artwork.format);
+  const pixelCount = typeof artwork.pixelData === "string" ? `${artwork.pixelData.length} клеток` : "данные о пикселях";
+
+  return `
+    <article class="gallery-card" data-artwork-id="${escapeHtml(artwork.id)}">
+      <img
+        class="gallery-card__image"
+        src="${escapeHtml(artwork.dataUrl)}"
+        alt="${escapeHtml(title)}"
+        loading="lazy"
+      />
+      <h3>${escapeHtml(title)}</h3>
+      <p>Сохранено: ${escapeHtml(savedDate)}</p>
+      <span class="gallery-card__meta">${escapeHtml(imageFormat)} · ${escapeHtml(pixelCount)}</span>
+      <div class="gallery-card__actions">
+        <button class="card-button" type="button" data-action="open" data-id="${escapeHtml(artwork.id)}">
+          Открыть
+        </button>
+        <button
+          class="card-button card-button--danger"
+          type="button"
+          data-action="delete"
+          data-id="${escapeHtml(artwork.id)}"
+        >
+          Удалить
+        </button>
+      </div>
+    </article>
+  `;
 }
 
 function renderGallery() {
+  const archiveItems = getArchiveItems();
   const placeholdersCount = Math.max(0, MAX_GALLERY_ITEMS - artworks.length);
   const cards = [
     ...artworks.map(renderArtworkCard),
-    ...Array.from({ length: placeholdersCount }, function (_, index) {
-      return renderPlaceholder(index + artworks.length);
-    }),
+    ...Array.from({ length: placeholdersCount }, (_, index) => renderPlaceholder(index + artworks.length)),
   ];
-
   galleryGrid.innerHTML = cards.join("");
-  galleryCount.textContent = artworks.length + " / " + MAX_GALLERY_ITEMS;
+  galleryCount.textContent = `${artworks.length} / ${MAX_GALLERY_ITEMS}`;
+  archiveCount.textContent =
+    archiveItems.length === 0 ? "В архиве пока 0 работ." : `В архиве сохранено данных: ${archiveItems.length}.`;
   emptyMessage.hidden = artworks.length > 0;
+  clearGalleryButton.disabled = artworks.length === 0;
 }
 
 function findArtwork(id) {
@@ -117,11 +148,15 @@ function findArtwork(id) {
 
 function openArtwork(id) {
   const artwork = findArtwork(id);
-  if (!artwork) return;
-
+  if (!artwork) {
+    return;
+  }
   modalTitle.textContent = "Сохранённый рисунок";
   modalImage.src = artwork.dataUrl;
-  modalMeta.textContent = formatDate(artwork.savedAt) + " · " + artwork.format;
+  modalImage.alt = `Сохранённая работа от ${formatDate(artwork.savedAt)}`;
+  modalMeta.textContent = `${formatDate(artwork.savedAt)} · ${formatImageFormat(artwork.format)} · ${
+    artwork.columns || 50
+  } × ${artwork.rows || 20}`;
   previewModal.hidden = false;
   document.body.style.overflow = "hidden";
 }
@@ -133,19 +168,24 @@ function closeModal() {
 }
 
 function deleteArtwork(id) {
+  const artwork = findArtwork(id);
+  if (!artwork) {
+    return;
+  }
   const shouldDelete = window.confirm("Удалить эту работу из локальной галереи?");
-  if (!shouldDelete) return;
-
-  artworks = artworks.filter(function (item) {
-    return item.id !== id;
-  });
-
-  saveStorageList(GALLERY_STORAGE_KEY, artworks);
+  if (!shouldDelete) {
+    return;
+  }
+  artworks = artworks.filter((item) => item.id !== id);
+  saveGallery();
   closeModal();
   renderGallery();
 }
 
 function clearGallery() {
+  if (artworks.length === 0) {
+    return;
+  }
   const shouldClear = window.confirm("Очистить все активные работы?");
   if (!shouldClear) return;
 
@@ -155,159 +195,21 @@ function clearGallery() {
   renderGallery();
 }
 
-function showSaveNotice(message, type = "success") {
-  window.clearTimeout(noticeTimeoutId);
-  saveNotice.textContent = message;
-  saveNotice.classList.toggle("is-error", type === "error");
-  saveNotice.classList.add("is-visible");
-
-  noticeTimeoutId = window.setTimeout(function () {
-    saveNotice.classList.remove("is-visible");
-  }, 4200);
-}
-
-function isQuotaExceeded(error) {
-  return (
-    error &&
-    (error.name === "QuotaExceededError" || error.name === "NS_ERROR_DOM_QUOTA_REACHED" || error.code === 22 || error.code === 1014)
-  );
-}
-
-function makeArchiveRecord(artwork) {
-  const archiveRecord = { ...artwork };
-  delete archiveRecord.dataUrl;
-
-  archiveRecord.archivedAt = new Date().toISOString();
-  archiveRecord.imageRemoved = true;
-  return archiveRecord;
-}
-
-function saveArchiveItems(items) {
-  if (!items.length) return;
-
-  const archiveItems = items.map(makeArchiveRecord);
-  const archive = [...archiveItems, ...loadStorageList(GALLERY_ARCHIVE_STORAGE_KEY)].slice(0, MAX_ARCHIVE_ITEMS);
-
-  try {
-    saveStorageList(GALLERY_ARCHIVE_STORAGE_KEY, archive);
-  } catch (error) {
-    console.warn("Архив не сохранён: в браузере мало места.", error);
-  }
-}
-
-function saveArtworkToGallery(artwork) {
-  const current = loadStorageList(GALLERY_STORAGE_KEY);
-  let next = [artwork, ...current];
-  const overflow = next.slice(MAX_GALLERY_ITEMS);
-
-  next = next.slice(0, MAX_GALLERY_ITEMS);
-
-  try {
-    saveStorageList(GALLERY_STORAGE_KEY, next);
-    saveArchiveItems(overflow);
-  } catch (error) {
-    if (isQuotaExceeded(error)) {
-      throw new Error("В браузере закончилось место для локальной галереи.");
-    }
-    throw error;
-  }
-}
-
-function serializeGrid() {
-  return cells
-    .map(function (cell) {
-      return cell.dataset.colorCode || "0";
-    })
-    .join("");
-}
-
-function getPaletteSnapshot() {
-  const palette = {};
-
-  Object.entries(CODE_TO_COLOR).forEach(function ([code, colorState]) {
-    palette[code] = colorState.background;
-  });
-
-  return palette;
-}
-
-function createPreviewFromPixelData(pixelData) {
-  const canvas = document.createElement("canvas");
-  canvas.width = GRID_COLUMNS * PREVIEW_CELL_SIZE;
-  canvas.height = GRID_ROWS * PREVIEW_CELL_SIZE;
-
-  const context = canvas.getContext("2d");
-  context.imageSmoothingEnabled = false;
-
-  for (let index = 0; index < pixelData.length; index++) {
-    const colorCode = pixelData[index] || "0";
-    const colorState = CODE_TO_COLOR[colorCode] || CODE_TO_COLOR["0"];
-    const x = (index % GRID_COLUMNS) * PREVIEW_CELL_SIZE;
-    const y = Math.floor(index / GRID_COLUMNS) * PREVIEW_CELL_SIZE;
-
-    context.fillStyle = colorState.background;
-    context.fillRect(x, y, PREVIEW_CELL_SIZE, PREVIEW_CELL_SIZE);
-  }
-
-  const dataUrl = canvas.toDataURL("image/webp", 0.9);
-  return { dataUrl, format: "image/webp" };
-}
-
-function createArtworkRecord() {
-  const pixelData = serializeGrid();
-  const preview = createPreviewFromPixelData(pixelData);
-
-  return {
-    id: "pixel-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8),
-    savedAt: new Date().toISOString(),
-    format: preview.format,
-    dataUrl: preview.dataUrl,
-    pixelData,
-    columns: GRID_COLUMNS,
-    rows: GRID_ROWS,
-    palette: getPaletteSnapshot(),
-  };
-}
-
-async function saveFieldAsImage() {
-  if (!field) {
-    showSaveNotice("Поле для рисования не найдено.", "error");
-    return;
-  }
-
-  saveImageButton.disabled = true;
-
-  try {
-    const artwork = createArtworkRecord();
-    saveArtworkToGallery(artwork);
-
-    const dataUrl = await domtoimage.toPng(field);
-    downloadDataUrl(dataUrl, "pixel-draw.png");
-
-    showSaveNotice("Рисунок сохранён в браузере и добавлен в галерею.");
-  } catch (error) {
-    console.error("Не удалось сохранить изображение:", error);
-    showSaveNotice("Не удалось сохранить рисунок. Возможно, в браузере мало места.", "error");
-  } finally {
-    saveImageButton.disabled = false;
-  }
-}
-
 galleryGrid.addEventListener("click", function (event) {
   const button = event.target.closest("[data-action]");
-  if (!button) return;
-
-  if (button.dataset.action === "open") {
-    openArtwork(button.dataset.id);
+  if (!button) {
+    return;
   }
-
+  const id = button.dataset.id;
+  if (button.dataset.action === "open") {
+    openArtwork(id);
+  }
   if (button.dataset.action === "delete") {
-    deleteArtwork(button.dataset.id);
+    deleteArtwork(id);
   }
 });
 
 clearGalleryButton.addEventListener("click", clearGallery);
-saveImageButton.addEventListener("click", saveFieldAsImage);
 
 previewModal.addEventListener("click", function (event) {
   if (event.target.closest("[data-close-modal]")) {
