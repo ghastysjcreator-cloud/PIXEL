@@ -19,7 +19,7 @@
           <a href="../HowToUse/HTU.html">How To Use</a>
         </nav>
 
-        <a class="button_draw" href="../draw/draw.html">draw</a>
+        <a class="header-button" href="../draw/draw.html">draw</a>
       </header>
       <main>
         <section class="gallery-hero">
@@ -40,48 +40,46 @@
             </div>
           </div>
         </section>
-        <div class="cards">
-          <div class="card">
-            <img src="../draw/images/pixel-draw1.png" alt="" />
-            <input type="text" value="text" />
+        <section class="section" aria-labelledby="gallery-title">
+          <div class="section__head">
+            <p class="eyebrow">saved pixel-art</p>
+            <h2 id="gallery-title">last 9 saves</h2>
+            <p>
+              new pixel-art apears first. if you want to save a pixel-art >9 it will disappear from the grid, but its data will be
+              presetved in the archive for the frutre revision.
+            </p>
           </div>
-          <div class="card">
-            <img src="../draw/images/pixel-draw2.png" alt="" />
-            <input type="text" value="text" />
+          <p class="empty-message" id="emptyMessage">
+            there are no saved images here yet. Click the editor button(Draw button), draw something, and on the top of the page scroll
+            on the addons bar until you find the <strong>Save Image</strong> button
+          </p>
+          <div class="gallery-grid" id="galleryGrid"></div>
+        </section>
+        <section class="archive-note">
+          <div>
+            <p class="eyebrow">archive</p>
+            <h2>archive finished</h2>
           </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-          <div class="card">
-            <img src="../draw/images/placeholder.png" alt="" />
-            <input type="text" value="text" />
-          </div>
-        </div>
+          <p>
+            Once the number of active works exceeds nine,old images will be removed from the gallery, and their pixel data will remain
+            in the local archive. A separate archive page can be added later
+          </p>
+        </section>
       </main>
       <footer class="footer">
-        <div class="copyright">&copy; 2026 Pixel-draw. All rights reserved.</div>
+        <div class="copyright">&copy; <span class="year">2026</span> Pixel-draw. All rights reserved.</div>
       </footer>
+    </div>
+    <div class="modal" id="previewModal" hidden>
+      <div class="modal__backdrop" data-close-modal>
+        <section class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+          <button class="modal__close" type="button" data-close-modal aria-label="Закрыть">×</button>
+          <p class="eyebrow">preview</p>
+          <h2 id="modalTitle">saved pixel-art</h2>
+          <img src="" alt="Caved Pixel-art Image" id="modalImage">
+          <p id="modalMeta"></p>
+        </section>
+      </div>
     </div>
     <script src="Gallery.JS"></script>
   </body>
