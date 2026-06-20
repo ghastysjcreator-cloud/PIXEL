@@ -5,7 +5,7 @@ html,
 body {
   height: 100%;
 }
-
+ 
 body {
   background: white;
   margin: 0;
@@ -13,8 +13,9 @@ body {
   flex-direction: column;
   min-height: 100vh;
   overflow: hidden;
+  background-image: url(images/backgroundIMG.png);
 }
-
+ 
 .header {
   min-height: 100px;
   width: 100%;
@@ -42,7 +43,7 @@ body {
   background-color: rgba(0, 0, 139, 0.5);
   flex-shrink: 0;
 }
-
+ 
 .field {
   width: min(100%, 1000px, calc((100vh - 230px) * 2.5));
   height: auto;
@@ -76,9 +77,8 @@ body {
   align-items: center;
   overflow: auto;
   padding: 12px;
-  background-image: url("Images/backgroundIMG.png");
 }
-
+ 
 .logo img {
   width: 100px;
   height: 100px;
@@ -86,7 +86,7 @@ body {
   object-fit: cover;
   display: block;
 }
-
+ 
 .color-picker {
   border-radius: 5px;
   border: 2.5px solid black;
@@ -106,7 +106,7 @@ body {
   align-items: center;
   background-color: whitesmoke;
 }
-
+ 
 .colors,
 .addons {
   min-height: 56px;
@@ -116,7 +116,7 @@ body {
   justify-content: center;
   align-items: center;
 }
-
+ 
 .red,
 .black,
 .green,
@@ -130,7 +130,7 @@ body {
   height: 28px;
   margin: 0;
 }
-
+ 
 .paint-all,
 .clear,
 .save-image {
@@ -139,11 +139,11 @@ body {
   background-color: lightgray;
   font-family: inherit;
 }
-
+ 
 .copyright {
   margin: 0;
 }
-
+ 
 .button_draw {
   width: fit-content;
   padding: 0.45rem 0.6rem;
@@ -185,6 +185,66 @@ main {
   user-select: none;
   cursor: pointer;
   font-size: large;
+}
+ 
+.gallery-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 14px;
+  border: 2px solid black;
+  border-radius: 6px;
+  background: white;
+  color: black;
+  font-family: "Archivo Black", Arial, sans-serif;
+  text-decoration: none;
+  user-select: none;
+  cursor: pointer;
+}
+ 
+.gallery-link:hover,
+.button_back:hover,
+.paint-all:hover,
+.clear:hover,
+.save-image:hover {
+  filter: brightness(0.94);
+}
+ 
+.save-notice {
+  position: fixed;
+  right: 18px;
+  bottom: 72px;
+  max-width: min(360px, calc(100% - 32px));
+  padding: 14px 16px;
+  border: 2px solid black;
+  border-radius: 8px;
+  background: white;
+  color: black;
+  box-shadow: 6px 6px 0 black;
+  font-family: "Archivo Black", Arial, sans-serif;
+  line-height: 1.35;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  z-index: 30;
+}
+ 
+.save-notice.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+ 
+.save-notice.is-error {
+  border-color: #b00020;
+  color: #b00020;
+}
+ 
+.save-notice a {
+  color: darkblue;
 }
 .black {
   border-radius: 5px;
@@ -274,7 +334,7 @@ main {
   display: flex;
   gap: 5px;
   width: 200px;
-  height: 75px;
+  height: 40px;
   margin: 5px;
   justify-content: center;
   align-items: center;
@@ -287,7 +347,7 @@ main {
   display: flex;
   gap: 5px;
   width: 150px;
-  height: 75px;
+  height: 40px;
   margin: 5px;
   justify-content: center;
   align-items: center;
@@ -302,7 +362,6 @@ main {
   background-color: lightgrey;
   user-select: none;
   cursor: pointer;
-  margin: 5px;
 }
 .save-image {
   border-radius: 5px;
@@ -312,24 +371,23 @@ main {
   background-color: lightgrey;
   user-select: none;
   cursor: pointer;
-  margin: 5px;
 }
 @media (max-width: 900px) {
   .field {
     min-width: 520px;
   }
 }
-
+ 
 @media (max-width: 640px) {
   body {
     overflow: auto;
   }
-
+ 
   .field {
     min-width: 460px;
     min-height: 300px;
   }
-
+ 
   .color-picker {
     width: 100%;
   }
