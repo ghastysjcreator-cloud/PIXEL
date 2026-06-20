@@ -14,9 +14,11 @@ const modalTitle = document.querySelector("#modalTitle");
 const year = document.querySelector("#year");
 
 let artworks = [];
+
 if (year) {
   year.textContent = new Date().getFullYear();
 }
+
 function loadStorageList(key) {
   try {
     const rawValue = localStorage.getItem(key);
@@ -49,9 +51,11 @@ function sortByDateDesc(items) {
 
 function formatDate(value) {
   const date = new Date(value);
+
   if (Number.isNaN(date.getTime())) {
     return "дата не указана";
   }
+
   return new Intl.DateTimeFormat("ru-RU", {
     day: "2-digit",
     month: "2-digit",
@@ -61,22 +65,22 @@ function formatDate(value) {
   }).format(date);
 }
 
-function formatImageFormat(fromat) {
+function formatImageFormat(format) {
   if (format === "image/webp") return "WebP";
   if (format === "image/png") return "PNG";
-  return format || " image";
+  return format || "изображение";
 }
 
 function getArchiveItems() {
   return loadStorageList(GALLERY_ARCHIVE_STORAGE_KEY);
 }
 
-function saveGallery() {
-  saveStorageList(GALLERY_STORAGE_KEY, artworks);
-}
-
 function loadGallery() {
   artworks = sortByDateDesc(loadStorageList(GALLERY_STORAGE_KEY)).slice(0, MAX_GALLERY_ITEMS);
+}
+
+function saveGallery() {
+  saveStorageList(GALLERY_STORAGE_KEY, artworks);
 }
 
 function renderPlaceholder(index) {
@@ -132,25 +136,27 @@ function renderGallery() {
     ...artworks.map(renderArtworkCard),
     ...Array.from({ length: placeholdersCount }, (_, index) => renderPlaceholder(index + artworks.length)),
   ];
+
   galleryGrid.innerHTML = cards.join("");
   galleryCount.textContent = `${artworks.length} / ${MAX_GALLERY_ITEMS}`;
   archiveCount.textContent =
     archiveItems.length === 0 ? "В архиве пока 0 работ." : `В архиве сохранено данных: ${archiveItems.length}.`;
+
   emptyMessage.hidden = artworks.length > 0;
   clearGalleryButton.disabled = artworks.length === 0;
 }
 
 function findArtwork(id) {
-  return artworks.find(function (artwork) {
-    return artwork.id === id;
-  });
+  return artworks.find((artwork) => artwork.id === id);
 }
 
 function openArtwork(id) {
   const artwork = findArtwork(id);
+
   if (!artwork) {
     return;
   }
+
   modalTitle.textContent = "Сохранённый рисунок";
   modalImage.src = artwork.dataUrl;
   modalImage.alt = `Сохранённая работа от ${formatDate(artwork.savedAt)}`;
@@ -169,13 +175,17 @@ function closeModal() {
 
 function deleteArtwork(id) {
   const artwork = findArtwork(id);
+
   if (!artwork) {
     return;
   }
+
   const shouldDelete = window.confirm("Удалить эту работу из локальной галереи?");
+
   if (!shouldDelete) {
     return;
   }
+
   artworks = artworks.filter((item) => item.id !== id);
   saveGallery();
   closeModal();
@@ -186,24 +196,32 @@ function clearGallery() {
   if (artworks.length === 0) {
     return;
   }
-  const shouldClear = window.confirm("Очистить все активные работы?");
-  if (!shouldClear) return;
+
+  const shouldClear = window.confirm("Очистить все активные работы из локальной галереи? Архивные данные останутся отдельно.");
+
+  if (!shouldClear) {
+    return;
+  }
 
   artworks = [];
-  saveStorageList(GALLERY_STORAGE_KEY, artworks);
+  saveGallery();
   closeModal();
   renderGallery();
 }
 
 galleryGrid.addEventListener("click", function (event) {
   const button = event.target.closest("[data-action]");
+
   if (!button) {
     return;
   }
+
   const id = button.dataset.id;
+
   if (button.dataset.action === "open") {
     openArtwork(id);
   }
+
   if (button.dataset.action === "delete") {
     deleteArtwork(id);
   }

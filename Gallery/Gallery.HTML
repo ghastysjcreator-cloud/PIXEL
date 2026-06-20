@@ -1,86 +1,99 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pixel Draw - Gallery</title>
-    <link rel="stylesheet" href="Gallery.CSS" />
+    <title>Pixel Draw - моя галерея</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="Gallery.css" />
   </head>
   <body>
     <div class="page">
       <header class="header">
-        <a class="logo">
+        <a class="logo" href="../index.html" aria-label="Pixel Draw">
           <img src="../draw/images/Logo.png" alt="Pixel Draw" />
         </a>
 
-        <nav class="nav" aria-label="navigation">
-          <a href="../AboutUs/AbtUs.html">About Us</a>
-          <a href="../index.html">back</a>
-          <a href="../HowToUse/HTU.html">How To Use</a>
+        <nav class="nav" aria-label="Навигация по сайту">
+          <a href="../AboutUs/AbtUs.html">О проекте</a>
+          <a href="../HowToUse/HTU.html">Как работает</a>
+          <a href="../draw/draw.html">Редактор</a>
         </nav>
 
-        <a class="header-button" href="../draw/draw.html">draw</a>
+        <a class="header-button" href="draw.html">Рисовать</a>
       </header>
+
       <main>
         <section class="gallery-hero">
           <div>
-            <p class="eyebrow">Gallery</p>
-            <h1>YOUR Gallery Of Saved Images</h1>
+            <p class="eyebrow">Local gallery</p>
+            <h1>Моя галерея рисунков</h1>
             <p class="gallery-hero__lead">
-              Here is where your images go to when you click the <strong>Save Image</strong> button in the editor and it saves it also
-              to your computer.
+              Здесь появляются работы, которые ты сохраняешь в редакторе кнопкой
+              <strong>Save Image</strong>. Галерея хранится только в твоём браузере: без сервера, аккаунта и базы данных.
             </p>
           </div>
+
           <div class="gallery-panel" aria-live="polite">
-            <span class="gallery-panel__label"> Your Work </span>
+            <span class="gallery-panel__label">Активные работы</span>
             <strong id="galleryCount">0 / 9</strong>
-            <p id="archiveCount">In the Archive right now is 0 saved images</p>
+            <p id="archiveCount">В архиве пока 0 работ.</p>
             <div class="gallery-panel__actions">
-              <button class="clear-gallery" id="clearGallery" type="button">Clear the Galery</button>
+              <a class="draw-button" href="draw.html">Перейти к рисованию</a>
+              <button class="clear-gallery" id="clearGallery" type="button">Очистить галерею</button>
             </div>
           </div>
         </section>
+
         <section class="section" aria-labelledby="gallery-title">
           <div class="section__head">
-            <p class="eyebrow">saved pixel-art</p>
-            <h2 id="gallery-title">last 9 saves</h2>
+            <p class="eyebrow">Saved works</p>
+            <h2 id="gallery-title">Последние 9 сохранений</h2>
             <p>
-              new pixel-art apears first. if you want to save a pixel-art >9 it will disappear from the grid, but its data will be
-              presetved in the archive for the frutre revision.
+              Новые рисунки появляются первыми. Если сохранить больше девяти работ, самая старая активная картинка исчезнет из этой
+              сетки, но её пиксельные данные сохранятся в архиве для будущей доработки.
             </p>
           </div>
+
           <p class="empty-message" id="emptyMessage">
-            there are no saved images here yet. Click the editor button(Draw button), draw something, and on the top of the page scroll
-            on the addons bar until you find the <strong>Save Image</strong> button
+            Пока здесь нет сохранённых работ. Открой редактор, нарисуй что-нибудь и нажми <strong>Save Image</strong>.
           </p>
+
           <div class="gallery-grid" id="galleryGrid"></div>
         </section>
+
         <section class="archive-note">
           <div>
-            <p class="eyebrow">archive</p>
-            <h2>archive finished</h2>
+            <p class="eyebrow">Archive</p>
+            <h2>Архив уже подготовлен</h2>
           </div>
           <p>
-            Once the number of active works exceeds nine,old images will be removed from the gallery, and their pixel data will remain
-            in the local archive. A separate archive page can be added later
+            Когда активных работ станет больше девяти, старые изображения будут убираться из галереи, а их данные о пикселях останутся
+            в локальном архиве. Отдельную страницу архива можно добавить позже.
           </p>
         </section>
       </main>
+
       <footer class="footer">
-        <div class="copyright">&copy; <span id="year">2026</span> Pixel-draw. All rights reserved.</div>
+        <span>&copy; <span id="year">2026</span> Pixel-draw. All rights reserved.</span>
+        <a href="../index.html">На главную</a>
+        <a href="../draw/draw.html">Перейти к рисованию</a>
       </footer>
     </div>
+
     <div class="modal" id="previewModal" hidden>
-      <div class="modal__backdrop" data-close-modal>
-        <section class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-          <button class="modal__close" type="button" data-close-modal aria-label="Закрыть">×</button>
-          <p class="eyebrow">preview</p>
-          <h2 id="modalTitle">saved pixel-art</h2>
-          <img src="" alt="Caved Pixel-art Image" id="modalImage">
-          <p id="modalMeta"></p>
-        </section>
-      </div>
+      <div class="modal__backdrop" data-close-modal></div>
+      <section class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <button class="modal__close" type="button" data-close-modal aria-label="Закрыть">×</button>
+        <p class="eyebrow">Preview</p>
+        <h2 id="modalTitle">Сохранённый рисунок</h2>
+        <img id="modalImage" src="" alt="Сохранённый пиксельный рисунок" />
+        <p id="modalMeta"></p>
+      </section>
     </div>
-    <script src="Gallery.JS"></script>
+
+    <script src="gallery.js"></script>
   </body>
 </html>
